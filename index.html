@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+
+    <script>
+        // Получаем элемент canvas
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d");
+
+        // Задаем размеры черного прямоугольника
+        const rectWidth = 200;
+        const rectHeight = 100;
+
+        // Задаем начальные координаты черного прямоугольника
+        let rectX = (canvas.width - rectWidth) / 2;
+        let rectY = (canvas.height - rectHeight) / 2;
+
+        // Задаем скорость перемещения черного прямоугольника
+        const rectSpeed = 5;
+
+        // Загружаем изображение
+        const image = new Image();
+        image.src = "./image.png";
+        image.onload = function() {
+            // Функция для отрисовки кадра
+            function drawFrame() {
+                // Очищаем canvas
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Рисуем черный прямоугольник
+                context.fillStyle = "black";
+                context.fillRect(rectX, rectY, rectWidth, rectHeight);
+
+                // Перемещаем прямоугольник
+                rectX += rectSpeed;
+
+                // Проверяем, достиг ли прямоугольник края canvas
+                if (rectX + rectWidth > canvas.width) {
+                    // Отрисовываем изображение
+                    context.drawImage(image, 0, 0);
+
+                    // Останавливаем анимацию
+                    cancelAnimationFrame(animationId);
+                } else {
+                    // Продолжаем анимацию
+                    animationId = requestAnimationFrame(drawFrame);
+                }
+            }
+
+            // Запускаем анимацию
+            const animationId = requestAnimationFrame(drawFrame);
+        };
+    </script>
+</body>
+</html>
